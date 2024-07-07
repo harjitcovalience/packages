@@ -30,6 +30,10 @@ class MixWithOthersMessage {
   MixWithOthersMessage(this.mixWithOthers);
   bool mixWithOthers;
 }
+class EnableSubtitlesMessage {
+  EnableSubtitlesMessage(this.textureId);
+  int textureId;
+}
 
 @HostApi(dartHostTestHandler: 'TestHostVideoPlayerApi')
 abstract class AVFoundationVideoPlayerApi {
@@ -57,4 +61,6 @@ abstract class AVFoundationVideoPlayerApi {
   void pause(int textureId);
   @ObjCSelector('setMixWithOthers:')
   void setMixWithOthers(bool mixWithOthers);
+  @ObjCSelector('enableSubtitles:')
+  void enableSubtitles(EnableSubtitlesMessage msg);
 }

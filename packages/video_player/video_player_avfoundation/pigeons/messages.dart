@@ -61,6 +61,6 @@ abstract class AVFoundationVideoPlayerApi {
   void pause(int textureId);
   @ObjCSelector('setMixWithOthers:')
   void setMixWithOthers(bool mixWithOthers);
-  @ObjCSelector('enableSubtitles:')
-  void enableSubtitles(EnableSubtitlesMessage msg);
+  // @ObjCSelector('enableSubtitles:')
+  // void enableSubtitles(EnableSubtitlesMessage msg);
 }

@@ -36,12 +36,6 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 - (NSArray *)toList;
 @end
 
-@interface FVPEnableSubtitlesMessage ()
-+ (FVPEnableSubtitlesMessage *)fromList:(NSArray *)list;
-+ (nullable FVPEnableSubtitlesMessage *)nullableFromList:(NSArray *)list;
-- (NSArray *)toList;
-@end
-
 @implementation FVPCreationOptions
 + (instancetype)makeWithAsset:(nullable NSString *)asset
     uri:(nullable NSString *)uri
@@ -79,27 +73,6 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 }
 @end
 
-@implementation FVPEnableSubtitlesMessage
-+ (instancetype)makeWithTextureId:(NSInteger )textureId {
-  FVPEnableSubtitlesMessage* pigeonResult = [[FVPEnableSubtitlesMessage alloc] init];
-  pigeonResult.textureId = textureId;
-  return pigeonResult;
-}
-+ (FVPEnableSubtitlesMessage *)fromList:(NSArray *)list {
-  FVPEnableSubtitlesMessage *pigeonResult = [[FVPEnableSubtitlesMessage alloc] init];
-  pigeonResult.textureId = [GetNullableObjectAtIndex(list, 0) integerValue];
-  return pigeonResult;
-}
-+ (nullable FVPEnableSubtitlesMessage *)nullableFromList:(NSArray *)list {
-  return (list) ? [FVPEnableSubtitlesMessage fromList:list] : nil;
-}
-- (NSArray *)toList {
-  return @[
-    @(self.textureId),
-  ];
-}
-@end
-
 @interface FVPAVFoundationVideoPlayerApiCodecReader : FlutterStandardReader
 @end
 @implementation FVPAVFoundationVideoPlayerApiCodecReader
@@ -107,8 +80,6 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
   switch (type) {
     case 128: 
       return [FVPCreationOptions fromList:[self readValue]];
-    case 129: 
-      return [FVPEnableSubtitlesMessage fromList:[self readValue]];
     default:
       return [super readValueOfType:type];
   }
@@ -121,9 +92,6 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 - (void)writeValue:(id)value {
   if ([value isKindOfClass:[FVPCreationOptions class]]) {
     [self writeByte:128];
-    [self writeValue:[value toList]];
-  } else if ([value isKindOfClass:[FVPEnableSubtitlesMessage class]]) {
-    [self writeByte:129];
     [self writeValue:[value toList]];
   } else {
     [super writeValue:value];
@@ -363,25 +331,6 @@ void SetUpFVPAVFoundationVideoPlayerApiWithSuffix(id<FlutterBinaryMessenger> bin
         BOOL arg_mixWithOthers = [GetNullableObjectAtIndex(args, 0) boolValue];
         FlutterError *error;
         [api setMixWithOthers:arg_mixWithOthers error:&error];
-        callback(wrapResult(nil, error));
-      }];
-    } else {
-      [channel setMessageHandler:nil];
-    }
-  }
-  {
-    FlutterBasicMessageChannel *channel =
-      [[FlutterBasicMessageChannel alloc]
-        initWithName:[NSString stringWithFormat:@"%@%@", @"dev.flutter.pigeon.video_player_avfoundation.AVFoundationVideoPlayerApi.enableSubtitles", messageChannelSuffix]
-        binaryMessenger:binaryMessenger
-        codec:FVPAVFoundationVideoPlayerApiGetCodec()];
-    if (api) {
-      NSCAssert([api respondsToSelector:@selector(enableSubtitles:error:)], @"FVPAVFoundationVideoPlayerApi api (%@) doesn't respond to @selector(enableSubtitles:error:)", api);
-      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
-        NSArray *args = message;
-        FVPEnableSubtitlesMessage *arg_msg = GetNullableObjectAtIndex(args, 0);
-        FlutterError *error;
-        [api enableSubtitles:arg_msg error:&error];
         callback(wrapResult(nil, error));
       }];
     } else {
